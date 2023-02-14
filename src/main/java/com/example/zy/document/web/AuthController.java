@@ -5,6 +5,7 @@ import com.example.zy.document.dto.LoginDTO;
 import com.example.zy.document.dto.SignupDTO;
 import com.example.zy.document.dto.TokenDTO;
 import com.example.zy.document.security.TokenGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,21 +24,15 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    final
+    @Autowired
     UserDetailsManager userDetailsManager;
-    final
+    @Autowired
     TokenGenerator tokenGenerator;
-    final
+    @Autowired
     DaoAuthenticationProvider daoAuthenticationProvider;
-    final
+    @Autowired
+    @Qualifier("jwtRefreshTokenAuthProvider")
     JwtAuthenticationProvider refreshTokenAuthProvider;
-
-    public AuthController(UserDetailsManager userDetailsManager, TokenGenerator tokenGenerator, DaoAuthenticationProvider daoAuthenticationProvider, @Qualifier("jwtRefreshTokenAuthProvider") JwtAuthenticationProvider refreshTokenAuthProvider) {
-        this.userDetailsManager = userDetailsManager;
-        this.tokenGenerator = tokenGenerator;
-        this.daoAuthenticationProvider = daoAuthenticationProvider;
-        this.refreshTokenAuthProvider = refreshTokenAuthProvider;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody SignupDTO signupDTO) {
