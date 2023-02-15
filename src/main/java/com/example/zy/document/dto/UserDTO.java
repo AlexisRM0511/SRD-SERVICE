@@ -9,6 +9,10 @@ import lombok.Data;
 public class UserDTO {
     private String id;
     private String username;
+    private String firstname;
+    private String lastname;
+    private String emailAddress;
+    private String phoneNumber;
 
     public static UserDTO from(User user) {
         return builder()

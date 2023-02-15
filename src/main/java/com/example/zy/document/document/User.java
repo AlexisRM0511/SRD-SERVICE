@@ -1,5 +1,6 @@
 package com.example.zy.document.document;
 
+import com.example.zy.document.dto.SignupDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -25,6 +26,27 @@ public class User implements UserDetails {
 
     @NonNull
     private String password;
+
+    @NonNull
+    private String firstname;
+
+    @NonNull
+    private String lastname;
+
+    @NonNull
+    private String emailAddress;
+
+    @NonNull
+    private String phoneNumber;
+
+    public User(SignupDTO signupDTO) {
+        this.username = signupDTO.getUsername();
+        this.password = signupDTO.getPassword();
+        this.firstname = signupDTO.getFirstname();
+        this.lastname = signupDTO.getLastname();
+        this.emailAddress = signupDTO.getEmailAddress();
+        this.phoneNumber = signupDTO.getPhoneNumber();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
