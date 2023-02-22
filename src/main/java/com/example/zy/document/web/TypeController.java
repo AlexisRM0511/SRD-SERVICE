@@ -1,8 +1,8 @@
 package com.example.zy.document.web;
 
-import com.example.zy.document.document.File;
+import com.example.zy.document.document.Type;
 import com.example.zy.document.document.User;
-import com.example.zy.document.repository.FileRepository;
+import com.example.zy.document.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class TypeController {
 
     @Autowired
-    private FileRepository fileRepository;
+    private TypeRepository typeRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<?> createFile(@RequestBody File file, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> createType(@RequestBody Type type, @AuthenticationPrincipal User user) {
         try {
-            File fileSave = fileRepository.save(file);
-            return new ResponseEntity<>(fileSave, HttpStatus.OK);
+            Type typeSave = typeRepository.save(type);
+            return new ResponseEntity<>(typeSave, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -29,17 +29,17 @@ public class TypeController {
     @GetMapping("/all")
     public ResponseEntity<?> getDocuments() {
         try {
-            return new ResponseEntity<>(fileRepository.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(typeRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateFile(@RequestBody File file) {
+    public ResponseEntity<?> updateType(@RequestBody Type type) {
         try {
-            File fileUpdate = fileRepository.save(file);
-            return new ResponseEntity<>(fileUpdate, HttpStatus.OK);
+            Type typeUpdate = typeRepository.save(type);
+            return new ResponseEntity<>(typeUpdate, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -48,17 +48,17 @@ public class TypeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDocument(@PathVariable String id) {
         try {
-            fileRepository.deleteById(id);
-            return new ResponseEntity<>("Document deleted", HttpStatus.OK);
+            typeRepository.deleteById(id);
+            return new ResponseEntity<>("Type deleted", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> readFile(@PathVariable String id) {
+    public ResponseEntity<?> readType(@PathVariable String id) {
         try {
-            return new ResponseEntity<>(fileRepository.findById(id), HttpStatus.OK);
+            return new ResponseEntity<>(typeRepository.findById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

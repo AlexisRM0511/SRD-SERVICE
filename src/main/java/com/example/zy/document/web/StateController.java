@@ -1,8 +1,8 @@
 package com.example.zy.document.web;
 
-import com.example.zy.document.document.File;
+import com.example.zy.document.document.State;
 import com.example.zy.document.document.User;
-import com.example.zy.document.repository.FileRepository;
+import com.example.zy.document.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +10,17 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/documents")
+@RequestMapping("/api/states")
 public class StateController {
 
     @Autowired
-    private FileRepository fileRepository;
+    private StateRepository stateRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<?> createFile(@RequestBody File file, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> createState(@RequestBody State state, @AuthenticationPrincipal User user) {
         try {
-            File fileSave = fileRepository.save(file);
-            return new ResponseEntity<>(fileSave, HttpStatus.OK);
+            State stateSave = stateRepository.save(state);
+            return new ResponseEntity<>(stateSave, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -29,17 +29,17 @@ public class StateController {
     @GetMapping("/all")
     public ResponseEntity<?> getDocuments() {
         try {
-            return new ResponseEntity<>(fileRepository.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(stateRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateFile(@RequestBody File file) {
+    public ResponseEntity<?> updateState(@RequestBody State state) {
         try {
-            File fileUpdate = fileRepository.save(file);
-            return new ResponseEntity<>(fileUpdate, HttpStatus.OK);
+            State stateUpdate = stateRepository.save(state);
+            return new ResponseEntity<>(stateUpdate, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -48,17 +48,17 @@ public class StateController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDocument(@PathVariable String id) {
         try {
-            fileRepository.deleteById(id);
-            return new ResponseEntity<>("Document deleted", HttpStatus.OK);
+            stateRepository.deleteById(id);
+            return new ResponseEntity<>("State deleted", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> readFile(@PathVariable String id) {
+    public ResponseEntity<?> readState(@PathVariable String id) {
         try {
-            return new ResponseEntity<>(fileRepository.findById(id), HttpStatus.OK);
+            return new ResponseEntity<>(stateRepository.findById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
