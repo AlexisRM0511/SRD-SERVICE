@@ -50,7 +50,7 @@ public class ClientController {
     public ResponseEntity<?> deleteDocument(@PathVariable String id) {
         try {
             clientRepository.deleteById(id);
-            return new ResponseEntity<>("Document deleted", HttpStatus.OK);
+            return new ResponseEntity<>("Client deleted", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
