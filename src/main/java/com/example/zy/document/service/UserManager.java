@@ -43,7 +43,7 @@ public class UserManager implements UserDetailsManager {
 
     @Override
     public void deleteUser(String username) {
-
+        userRepository.deleteById(username);
     }
 
     @Override

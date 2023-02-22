@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/documents")
-public class FileController {
+public class StateController {
 
     @Autowired
     private FileRepository fileRepository;
