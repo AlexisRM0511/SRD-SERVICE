@@ -11,7 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/client")
+@RequestMapping("/api/clients")
 public class ClientController {
 
     @Autowired
