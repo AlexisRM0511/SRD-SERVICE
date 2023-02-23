@@ -63,32 +63,33 @@ public class TokenGenerator {
     }
 
     public TokenDTO createToken(Authentication authentication) {
-        if (!(authentication.getPrincipal() instanceof User user)) {
+        if (authentication.getPrincipal() instanceof User user) {
+            TokenDTO tokenDTO = new TokenDTO();
+            tokenDTO.setUserId(user.getId());
+            tokenDTO.setAccessToken(createAccessToken(authentication));
+
+            String refreshToken;
+            if (authentication.getCredentials() instanceof Jwt jwt) {
+                Instant now = Instant.now();
+                Instant expiresAt = jwt.getExpiresAt();
+                Duration duration = Duration.between(now, expiresAt);
+                long daysUntilExpired = duration.toDays();
+                if (daysUntilExpired < 7) {
+                    refreshToken = createRefreshToken(authentication);
+                } else {
+                    refreshToken = jwt.getTokenValue();
+                }
+            } else {
+                refreshToken = createRefreshToken(authentication);
+            }
+            tokenDTO.setRefreshToken(refreshToken);
+
+            return tokenDTO;
+        } else {
             throw new BadCredentialsException(
                     MessageFormat.format("principal {0} is not of User type", authentication.getPrincipal().getClass())
             );
         }
 
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setUserId(user.getId());
-        tokenDTO.setAccessToken(createAccessToken(authentication));
-
-        String refreshToken;
-        if (authentication.getCredentials() instanceof Jwt jwt) {
-            Instant now = Instant.now();
-            Instant expiresAt = jwt.getExpiresAt();
-            Duration duration = Duration.between(now, expiresAt);
-            long daysUntilExpired = duration.toDays();
-            if (daysUntilExpired < 7) {
-                refreshToken = createRefreshToken(authentication);
-            } else {
-                refreshToken = jwt.getTokenValue();
-            }
-        } else {
-            refreshToken = createRefreshToken(authentication);
-        }
-        tokenDTO.setRefreshToken(refreshToken);
-
-        return tokenDTO;
     }
 }

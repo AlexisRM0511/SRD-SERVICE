@@ -1,23 +1,23 @@
 package com.example.zy.document.web;
 
 import com.example.zy.document.document.Type;
-import com.example.zy.document.document.User;
 import com.example.zy.document.repository.TypeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/types")
 public class TypeController {
 
-    @Autowired
-    private TypeRepository typeRepository;
+    private final TypeRepository typeRepository;
+
+    public TypeController(TypeRepository typeRepository) {
+        this.typeRepository = typeRepository;
+    }
 
     @PostMapping("/save")
-    public ResponseEntity<?> createType(@RequestBody Type type, @AuthenticationPrincipal User user) {
+    public ResponseEntity<?> createType(@RequestBody Type type) {
         try {
             Type typeSave = typeRepository.save(type);
             return new ResponseEntity<>(typeSave, HttpStatus.OK);
