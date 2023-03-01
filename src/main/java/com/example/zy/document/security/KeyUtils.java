@@ -18,10 +18,12 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Component
 @Slf4j
 public class KeyUtils {
+    Logger logger = Logger.getLogger(KeyUtils.class.getName());
     final
     Environment environment;
 
@@ -37,25 +39,25 @@ public class KeyUtils {
     @Value("${refresh-token.public}")
     private String refreshTokenPublicKeyPath;
 
-    private KeyPair _accessTokenKeyPair;
-    private KeyPair _refreshTokenKeyPair;
+    private KeyPair accessTokenKeyPair;
+    private KeyPair refreshTokenKeyPair;
 
     public KeyUtils(Environment environment) {
         this.environment = environment;
     }
 
     private KeyPair getAccessTokenKeyPair() {
-        if (Objects.isNull(_accessTokenKeyPair)) {
-            _accessTokenKeyPair = getKeyPair(accessTokenPublicKeyPath, accessTokenPrivateKeyPath);
+        if (Objects.isNull(accessTokenKeyPair)) {
+            accessTokenKeyPair = getKeyPair(accessTokenPublicKeyPath, accessTokenPrivateKeyPath);
         }
-        return _accessTokenKeyPair;
+        return accessTokenKeyPair;
     }
 
     private KeyPair getRefreshTokenKeyPair() {
-        if (Objects.isNull(_refreshTokenKeyPair)) {
-            _refreshTokenKeyPair = getKeyPair(refreshTokenPublicKeyPath, refreshTokenPrivateKeyPath);
+        if (Objects.isNull(refreshTokenKeyPair)) {
+            refreshTokenKeyPair = getKeyPair(refreshTokenPublicKeyPath, refreshTokenPrivateKeyPath);
         }
-        return _refreshTokenKeyPair;
+        return refreshTokenKeyPair;
     }
 
     private KeyPair getKeyPair(String publicKeyPath, String privateKeyPath) {
@@ -80,20 +82,20 @@ public class KeyUtils {
                 keyPair = new KeyPair(publicKey, privateKey);
                 return keyPair;
             } catch (NoSuchAlgorithmException | IOException | InvalidKeySpecException e) {
-                throw new RuntimeException(e);
+                logger.warning(e.getMessage());
             }
         } else {
             if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
-                throw new RuntimeException("public and private keys don't exist");
+                logger.warning("No keys found in production mode");
             }
         }
 
         File directory = new File("access-refresh-token-keys");
-        if (!directory.exists()) {
-            if (!directory.mkdir()) {
-                throw new RuntimeException("Unable to create directory: " + directory.getAbsolutePath());
+        do {
+            if (!directory.exists()) {
+                break;
             }
-        }
+        } while (!directory.mkdirs());
         try {
             log.info("Generating new public and private keys: {}, {}", publicKeyPath, privateKeyPath);
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -111,10 +113,8 @@ public class KeyUtils {
         } catch (NoSuchAlgorithmException | IOException e) {
             throw new RuntimeException(e);
         }
-
         return keyPair;
     }
-
 
     public RSAPublicKey getAccessTokenPublicKey() {
         return (RSAPublicKey) getAccessTokenKeyPair().getPublic();

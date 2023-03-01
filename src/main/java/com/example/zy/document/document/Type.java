@@ -1,31 +1,25 @@
 package com.example.zy.document.document;
 
+import com.example.zy.document.dto.TypeDTO;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Document(collection = "Types")
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor
+@Builder
 public class Type {
-
     @Id
     private String id;
-    @NonNull
     private String description;
+    private String descriptionShort;
 
-    @NonNull
-    private String description_short;
-
-    public Type(String id, @NonNull String description, @NonNull String description_short) {
-        this.id = id;
-        this.description = description;
-        this.description_short = description_short;
+    public static Type from(TypeDTO typeDTO) {
+        return Type.builder()
+                .id(typeDTO.getId())
+                .description(typeDTO.getDescription())
+                .descriptionShort(typeDTO.getDescriptionShort())
+                .build();
     }
 }

@@ -6,26 +6,25 @@ import com.example.zy.document.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.text.MessageFormat;
 
 @Service
-public class UserManager implements UserDetailsManager {
+public class UserService implements UserDetailsManager {
     UserRepository userRepository;
 
     final
     PasswordEncoder passwordEncoder;
 
-    public UserManager(PasswordEncoder passwordEncoder) {
+    public UserService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     @Autowired
-    public UserManager(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -38,7 +37,7 @@ public class UserManager implements UserDetailsManager {
 
     @Override
     public void updateUser(UserDetails user) {
-
+        userRepository.save((User) user);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class UserManager implements UserDetailsManager {
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-
+        ((User) loadUserByUsername(oldPassword)).setPassword(passwordEncoder.encode(newPassword));
     }
 
     @Override

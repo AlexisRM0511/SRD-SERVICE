@@ -1,39 +1,29 @@
 package com.example.zy.document.document;
 
+import com.example.zy.document.dto.ClientDTO;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Document(collection = "Clients")
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor
+@Builder
 public class Client {
-
     @Id
     private String id;
-    @NonNull
     private String description;
-
-    @NonNull
-    private String description_short;
-
-    @NonNull
+    private String descriptionShort;
     private String nickname;
+    private String statusId;
 
-    @NonNull
-    private String status_id;
-
-    public Client(String id, @NonNull String description, @NonNull String description_short, @NonNull String nickname, @NonNull String status_id) {
-        this.id = id;
-        this.description = description;
-        this.description_short = description_short;
-        this.nickname = nickname;
-        this.status_id = status_id;
+    public static Client from(ClientDTO clientDTO) {
+        return Client.builder()
+                .id(clientDTO.getId())
+                .description(clientDTO.getDescription())
+                .descriptionShort(clientDTO.getDescriptionShort())
+                .nickname(clientDTO.getNickname())
+                .statusId(clientDTO.getStatusId())
+                .build();
     }
 }

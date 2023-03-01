@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-@Document
+@Document(collection = "Users")
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor

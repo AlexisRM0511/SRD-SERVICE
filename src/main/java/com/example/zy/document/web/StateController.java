@@ -1,66 +1,92 @@
 package com.example.zy.document.web;
 
 import com.example.zy.document.document.State;
-import com.example.zy.document.document.User;
+import com.example.zy.document.dto.StateDTO;
 import com.example.zy.document.repository.StateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.example.zy.document.utils.ZyCode;
+import com.example.zy.document.utils.ZyResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/states")
 public class StateController {
 
-    @Autowired
-    private StateRepository stateRepository;
+    Logger logger = Logger.getLogger(StateController.class.getName());
+    private final StateRepository stateRepository;
+
+    public StateController(StateRepository stateRepository) {
+        this.stateRepository = stateRepository;
+    }
 
     @PostMapping("/save")
-    public ResponseEntity<?> createState(@RequestBody State state, @AuthenticationPrincipal User user) {
+    public ZyResponse<State> saveDocument(@RequestBody StateDTO stateDTO) {
         try {
-            State stateSave = stateRepository.save(state);
-            return new ResponseEntity<>(stateSave, HttpStatus.OK);
+//            tokenGenerator.
+            return new ZyResponse<>(ZyCode.SUCCESS, stateRepository.save(State.from(stateDTO)));
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.info(e.getMessage());
+            return new ZyResponse<>(ZyCode.ERROR);
         }
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getDocuments() {
+    public ZyResponse<List<State>> readAllStates() {
         try {
-            return new ResponseEntity<>(stateRepository.findAll(), HttpStatus.OK);
+            return new ZyResponse<>(ZyCode.SUCCESS, stateRepository.findAll());
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.info(e.getMessage());
+            return new ZyResponse<>(ZyCode.ERROR);
         }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateState(@RequestBody State state) {
+    public ZyResponse<State> updateDocument(@RequestBody StateDTO stateDTO) {
         try {
-            State stateUpdate = stateRepository.save(state);
-            return new ResponseEntity<>(stateUpdate, HttpStatus.OK);
+            return new ZyResponse<>(ZyCode.SUCCESS, stateRepository.save(State.from(stateDTO)));
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.info(e.getMessage());
+            return new ZyResponse<>(ZyCode.ERROR);
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteDocument(@PathVariable String id) {
+    public ZyResponse<String> deleteDocument(@PathVariable String id) {
         try {
             stateRepository.deleteById(id);
-            return new ResponseEntity<>("State deleted", HttpStatus.OK);
+            return new ZyResponse<>(ZyCode.SUCCESS);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.info(e.getMessage());
+            return new ZyResponse<>(ZyCode.ERROR);
         }
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> readState(@PathVariable String id) {
+    public ZyResponse<Optional<State>> readState(@PathVariable String id) {
         try {
-            return new ResponseEntity<>(stateRepository.findById(id), HttpStatus.OK);
+            return new ZyResponse<>(ZyCode.SUCCESS, stateRepository.findById(id));
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.info(e.getMessage());
+            return new ZyResponse<>(ZyCode.ERROR);
+        }
+    }
+
+    @PostMapping("/filter")
+    public ZyResponse<List<State>> filterStates(@RequestBody StateDTO stateDTO) {
+        try {
+            if (stateDTO.getDescription() == null) {
+                stateDTO.setDescription("");
+            }
+            if (stateDTO.getDescriptionShort() == null) {
+                stateDTO.setDescriptionShort("");
+            }
+            return new ZyResponse<>(ZyCode.SUCCESS, stateRepository.findByFills(stateDTO.getDescription(), stateDTO.getDescriptionShort()));
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            return new ZyResponse<>(ZyCode.ERROR);
         }
     }
 }
