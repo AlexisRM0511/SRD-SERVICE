@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/types")
+@RequestMapping("/api/type")
 public class TypeController {
 
     Logger logger = Logger.getLogger(TypeController.class.getName());
@@ -34,7 +34,7 @@ public class TypeController {
     }
 
     @GetMapping("/all")
-    public ZyResponse<List<Type>> readAllTypes() {
+    public ZyResponse<List<Type>> readAllDocuments() {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, typeRepository.findAll());
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class TypeController {
     }
 
     @GetMapping("/get/{id}")
-    public ZyResponse<Optional<Type>> readType(@PathVariable String id) {
+    public ZyResponse<Optional<Type>> readDocument(@PathVariable String id) {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, typeRepository.findById(id));
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class TypeController {
     }
 
     @PostMapping("/filter")
-    public ZyResponse<List<Type>> filterTypes(@RequestBody TypeDTO typeDTO) {
+    public ZyResponse<List<Type>> filterDocuments(@RequestBody TypeDTO typeDTO) {
         try {
             if (typeDTO.getDescription() == null) {
                 typeDTO.setDescription("");
@@ -83,7 +83,7 @@ public class TypeController {
             if (typeDTO.getDescriptionShort() == null) {
                 typeDTO.setDescriptionShort("");
             }
-            return new ZyResponse<>(ZyCode.SUCCESS, typeRepository.findByFills(typeDTO.getDescription(), typeDTO.getDescriptionShort()));
+            return new ZyResponse<>(ZyCode.SUCCESS, typeRepository.findByFills(typeDTO.getManagement(), typeDTO.getDivisionId(), typeDTO.getDescription(), typeDTO.getDescriptionShort()));
         } catch (Exception e) {
             logger.info(e.getMessage());
             return new ZyResponse<>(ZyCode.ERROR);

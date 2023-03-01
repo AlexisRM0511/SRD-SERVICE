@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/states")
+@RequestMapping("/api/state")
 public class StateController {
 
     Logger logger = Logger.getLogger(StateController.class.getName());
@@ -34,7 +34,7 @@ public class StateController {
     }
 
     @GetMapping("/all")
-    public ZyResponse<List<State>> readAllStates() {
+    public ZyResponse<List<State>> readAllDocuments() {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, stateRepository.findAll());
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class StateController {
     }
 
     @GetMapping("/get/{id}")
-    public ZyResponse<Optional<State>> readState(@PathVariable String id) {
+    public ZyResponse<Optional<State>> readDocument(@PathVariable String id) {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, stateRepository.findById(id));
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class StateController {
     }
 
     @PostMapping("/filter")
-    public ZyResponse<List<State>> filterStates(@RequestBody StateDTO stateDTO) {
+    public ZyResponse<List<State>> filterDocuments(@RequestBody StateDTO stateDTO) {
         try {
             if (stateDTO.getDescription() == null) {
                 stateDTO.setDescription("");

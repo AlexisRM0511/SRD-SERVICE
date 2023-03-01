@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping("/api/file")
 public class FileController {
 
     Logger logger = Logger.getLogger(FileController.class.getName());
@@ -34,7 +34,7 @@ public class FileController {
     }
 
     @GetMapping("/all")
-    public ZyResponse<List<File>> readAllFiles() {
+    public ZyResponse<List<File>> readAllDocuments() {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, fileRepository.findAll());
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class FileController {
     }
 
     @GetMapping("/get/{id}")
-    public ZyResponse<Optional<File>> readFile(@PathVariable String id) {
+    public ZyResponse<Optional<File>> readDocument(@PathVariable String id) {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, fileRepository.findById(id));
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class FileController {
     }
 
     @PostMapping("/filter")
-    public ZyResponse<List<File>> filterFiles(@RequestBody FileDTO fileDTO) {
+    public ZyResponse<List<File>> filterDocuments(@RequestBody FileDTO fileDTO) {
         try {
             if (fileDTO.getStatusId() == null) {
                 fileDTO.setStatusId("");

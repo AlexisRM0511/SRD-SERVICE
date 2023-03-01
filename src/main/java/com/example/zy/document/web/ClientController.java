@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/api/client")
 public class ClientController {
 
     Logger logger = Logger.getLogger(ClientController.class.getName());
@@ -34,7 +34,7 @@ public class ClientController {
     }
 
     @GetMapping("/all")
-    public ZyResponse<List<Client>> readAllClients() {
+    public ZyResponse<List<Client>> readAllDocuments() {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, clientRepository.findAll());
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class ClientController {
     }
 
     @GetMapping("/get/{id}")
-    public ZyResponse<Optional<Client>> readClient(@PathVariable String id) {
+    public ZyResponse<Optional<Client>> readDocument(@PathVariable String id) {
         try {
             return new ZyResponse<>(ZyCode.SUCCESS, clientRepository.findById(id));
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class ClientController {
     }
 
     @PostMapping("/filter")
-    public ZyResponse<List<Client>> filterClients(@RequestBody ClientDTO clientDTO) {
+    public ZyResponse<List<Client>> filterDocuments(@RequestBody ClientDTO clientDTO) {
         try {
             if (clientDTO.getNickname() == null) {
                 clientDTO.setNickname("");

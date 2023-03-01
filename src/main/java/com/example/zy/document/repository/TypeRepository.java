@@ -21,6 +21,6 @@ public interface TypeRepository extends MongoRepository<Type, String> {
     @Override
     Optional<Type> findById(String s);
 
-    @Query("{ 'description' : { '$regex': ?0, '$options': 'i' }, 'descriptionShort' : { '$regex': ?1, '$options': 'i' } }")
-    List<Type> findByFills(String description, String descriptionShort);
+    @Query("{ 'management' : { '$regex': ?0, '$options': 'i' }, 'divisionId' : { '$regex': ?1, '$options': 'i' }, 'description' : { '$regex': ?2, '$options': 'i' }, 'descriptionShort' : { '$regex': ?3, '$options': 'i' } }")
+    List<Type> findByFills(String management, String divisionId, String description, String descriptionShort);
 }
