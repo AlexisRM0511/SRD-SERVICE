@@ -91,11 +91,8 @@ public class KeyUtils {
         }
 
         File directory = new File("access-refresh-token-keys");
-        if (!directory.exists()) {
-            boolean directoryCreated = directory.mkdirs();
-            if (!directoryCreated) {
-                logger.warning("Could not create directory for keys");
-            }
+        if (!directory.exists() && (!directory.mkdir())) {
+            throw new RuntimeException("Unable to create directory: " + directory.getAbsolutePath());
         }
         try {
             log.info("Generating new public and private keys: {}, {}", publicKeyPath, privateKeyPath);
