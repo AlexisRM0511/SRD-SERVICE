@@ -91,11 +91,12 @@ public class KeyUtils {
         }
 
         File directory = new File("access-refresh-token-keys");
-        do {
-            if (!directory.exists()) {
-                break;
+        if (!directory.exists()) {
+            boolean directoryCreated = directory.mkdirs();
+            if (!directoryCreated) {
+                logger.warning("Could not create directory for keys");
             }
-        } while (!directory.mkdirs());
+        }
         try {
             log.info("Generating new public and private keys: {}, {}", publicKeyPath, privateKeyPath);
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
