@@ -1,29 +1,43 @@
 package com.example.zy.document.document;
 
 import com.example.zy.document.dto.SignupDTO;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 import java.util.Collections;
 
 @Document(collection = "Users")
 @Data
-@Builder
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
     @Id
     private String id;
-    private String username;
-    private String password;
-    private String firstname;
-    private String lastname;
-    private String emailAddress;
-    private String phoneNumber;
 
-    public User() {
-    }
+    @NonNull
+    private String username;
+
+    @NonNull
+    private String password;
+
+    @NonNull
+    private String firstname;
+
+    @NonNull
+    private String lastname;
+
+    @NonNull
+    private String emailAddress;
+
+    @NonNull
+    private String phoneNumber;
 
     public User(SignupDTO signupDTO) {
         this.username = signupDTO.getUsername();
@@ -32,17 +46,6 @@ public class User implements UserDetails {
         this.lastname = signupDTO.getLastname();
         this.emailAddress = signupDTO.getEmailAddress();
         this.phoneNumber = signupDTO.getPhoneNumber();
-    }
-
-    public static User from(SignupDTO signupDTO) {
-        return User.builder()
-                .username(signupDTO.getUsername())
-                .password(signupDTO.getPassword())
-                .firstname(signupDTO.getFirstname())
-                .lastname(signupDTO.getLastname())
-                .emailAddress(signupDTO.getEmailAddress())
-                .phoneNumber(signupDTO.getPhoneNumber())
-                .build();
     }
 
     @Override
