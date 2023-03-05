@@ -2,6 +2,7 @@ package com.example.zy.document.security;
 
 import com.example.zy.document.document.User;
 import com.example.zy.document.dto.TokenDTO;
+import com.example.zy.document.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -24,9 +25,12 @@ public class TokenGenerator {
     final
     JwtEncoder refreshTokenEncoder;
 
-    public TokenGenerator(JwtEncoder accessTokenEncoder, @Qualifier("jwtRefreshTokenEncoder") JwtEncoder refreshTokenEncoder) {
+    final UserRepository userRepository;
+
+    public TokenGenerator(JwtEncoder accessTokenEncoder, @Qualifier("jwtRefreshTokenEncoder") JwtEncoder refreshTokenEncoder, UserRepository userRepository) {
         this.accessTokenEncoder = accessTokenEncoder;
         this.refreshTokenEncoder = refreshTokenEncoder;
+        this.userRepository = userRepository;
     }
 
     private String createAccessToken(Authentication authentication) {
@@ -46,7 +50,6 @@ public class TokenGenerator {
     private String createRefreshToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Instant now = Instant.now();
-
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("myApp")
                 .issuedAt(now)
@@ -66,6 +69,7 @@ public class TokenGenerator {
 
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setUserId(user.getId());
+        tokenDTO.setUsername(user.getUsername());
         tokenDTO.setAccessToken(createAccessToken(authentication));
 
         String refreshToken;
