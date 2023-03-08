@@ -21,6 +21,6 @@ public interface FileRepository extends MongoRepository<File, String> {
     @Override
     Optional<File> findById(String s);
 
-    @Query("{ 'statusId' : { '$regex': ?0, '$options': 'i' }, 'typeId' : { '$regex': ?1, '$options': 'i' } }")
-    List<File> findByFills(String statusId, String typeId);
+    @Query("{ 'statusId' : { '$regex': ?0, '$options': 'i' }, 'typeId' : { '$regex': ?1, '$options': 'i' }, 'clientId' : { '$regex': ?2, '$options': 'i' } }")
+    List<File> findByFills(String statusId, String typeId, String clientId);
 }

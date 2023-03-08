@@ -25,7 +25,6 @@ public class FileController {
     @PostMapping("/save")
     public ZyResponse<File> saveDocument(@RequestBody FileDTO fileDTO) {
         try {
-//            tokenGenerator.
             return new ZyResponse<>(ZyCode.SUCCESS, fileRepository.save(File.from(fileDTO)));
         } catch (Exception e) {
             logger.info(e.getMessage());
@@ -77,13 +76,18 @@ public class FileController {
     @PostMapping("/filter")
     public ZyResponse<List<File>> filterDocuments(@RequestBody FileDTO fileDTO) {
         try {
-            if (fileDTO.getStatusId() == null) {
-                fileDTO.setStatusId("");
+            if (fileDTO.getStateId() == null) {
+                fileDTO.setStateId("");
             }
             if (fileDTO.getTypeId() == null) {
                 fileDTO.setTypeId("");
             }
-            return new ZyResponse<>(ZyCode.SUCCESS, fileRepository.findByFills(fileDTO.getStatusId(), fileDTO.getTypeId()));
+
+            if (fileDTO.getClientId() == null) {
+                fileDTO.setClientId("");
+            }
+
+            return new ZyResponse<>(ZyCode.SUCCESS, fileRepository.findByFills(fileDTO.getStateId(), fileDTO.getTypeId(), fileDTO.getClientId()));
         } catch (Exception e) {
             logger.info(e.getMessage());
             return new ZyResponse<>(ZyCode.ERROR);
