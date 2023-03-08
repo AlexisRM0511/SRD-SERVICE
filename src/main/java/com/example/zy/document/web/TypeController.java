@@ -28,7 +28,7 @@ public class TypeController {
     @PostMapping("/save")
     public ZyResponse<Type> saveDocument(@RequestBody TypeDTO typeDTO) {
         try {
-            divisionRepository.findById(typeDTO.getDivisionId()).ifPresent(division -> typeDTO.setDivisionDescription(division.getDescription()));
+            divisionRepository.findById(typeDTO.getDivisionId()).ifPresent(division -> typeDTO.setDivisionCode(division.getCode()));
             return new ZyResponse<>(ZyCode.SUCCESS, typeRepository.save(Type.from(typeDTO)));
         } catch (Exception e) {
             logger.info(e.getMessage());

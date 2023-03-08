@@ -11,7 +11,7 @@ public class TypeDTO {
     private String management;
     private String divisionId;
     private String description;
-    private String divisionDescription;
+    private String divisionCode;
     private String descriptionShort;
 
     public static TypeDTO from(Type type) {
@@ -20,6 +20,7 @@ public class TypeDTO {
                 .management(type.getManagement())
                 .divisionId(type.getDivisionId())
                 .description(type.getDescription())
+                .divisionCode(type.getDivisionCode())
                 .descriptionShort(type.getDescriptionShort())
                 .build();
     }
