@@ -33,7 +33,7 @@ public class SrdServiceApplication {
                 public void addCorsMappings(CorsRegistry registry) {
                     registry
                             .addMapping("/**")
-                            .allowedOrigins("http://localhost:4200", "https://srd-portal-dev.netlify.app")
+                            .allowedOrigins("https://srd-portal-dev.netlify.app", "http://localhost:4200")
                             .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
                 }
             };

@@ -125,7 +125,7 @@ public class WebSecurity {
     @Bean
     CorsConfiguration corsConfiguration() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200, https://srd-portal-dev.netlify.app"));
+        corsConfiguration.setAllowedOrigins(List.of("https://srd-portal-dev.netlify.app, http://localhost:4200"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
