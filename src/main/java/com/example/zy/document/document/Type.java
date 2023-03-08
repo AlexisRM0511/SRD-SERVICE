@@ -12,15 +12,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Type {
     @Id
     private String id;
+    private String code;
+    private String description;
+    private String descriptionShort;
     private String management;
     private String divisionId;
     private String divisionCode;
-    private String description;
-    private String descriptionShort;
 
     public static Type from(TypeDTO typeDTO) {
         return Type.builder()
                 .id(typeDTO.getId())
+                .code(typeDTO.getCode())
                 .management(typeDTO.getManagement())
                 .divisionId(typeDTO.getDivisionId())
                 .divisionCode(typeDTO.getDivisionCode())

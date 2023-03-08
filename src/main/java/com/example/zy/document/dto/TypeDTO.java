@@ -8,15 +8,17 @@ import lombok.Data;
 @Data
 public class TypeDTO {
     private String id;
+    private String code;
+    private String description;
+    private String descriptionShort;
     private String management;
     private String divisionId;
-    private String description;
     private String divisionCode;
-    private String descriptionShort;
 
     public static TypeDTO from(Type type) {
         return TypeDTO.builder()
                 .id(type.getId())
+                .code(type.getCode())
                 .management(type.getManagement())
                 .divisionId(type.getDivisionId())
                 .description(type.getDescription())
