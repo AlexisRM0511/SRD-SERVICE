@@ -58,7 +58,7 @@ public class WebSecurity {
                         .anyRequest().authenticated()
                 )
                 .csrf().disable()
-                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+                .cors().configurationSource(request -> corsConfiguration())
                 .and()
                 .httpBasic().disable()
                 .oauth2ResourceServer(oauth2 ->
@@ -120,5 +120,16 @@ public class WebSecurity {
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailsManager);
         return provider;
+    }
+
+    @Bean
+    CorsConfiguration corsConfiguration() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200, https://srd-portal-dev.netlify.app"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setExposedHeaders(List.of("Authorization"));
+        corsConfiguration.setAllowCredentials(true);
+        return corsConfiguration;
     }
 }
