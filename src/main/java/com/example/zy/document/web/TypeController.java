@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/api/type")
 public class TypeController {
 
