@@ -14,9 +14,9 @@ import java.util.Date;
 public class File {
     @Id
     private String id;
-
     private String name;
     private String code;
+    private String description;
     private String typeId;
     private String typeDescriptionShort;
     private String clientId;
@@ -33,6 +33,7 @@ public class File {
                 .id(fileDTO.getId())
                 .name(fileDTO.getName())
                 .code(fileDTO.getCode())
+                .description(fileDTO.getDescription())
                 .typeId(fileDTO.getTypeId())
                 .typeDescriptionShort(fileDTO.getTypeDescriptionShort())
                 .clientId(fileDTO.getClientId())

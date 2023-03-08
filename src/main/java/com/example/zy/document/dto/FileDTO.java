@@ -12,6 +12,7 @@ public class FileDTO {
     private String id;
     private String name;
     private String code;
+    private String description;
     private String typeId;
     private String typeDescriptionShort;
     private String clientId;
@@ -28,6 +29,7 @@ public class FileDTO {
                 .id(file.getId())
                 .name(file.getName())
                 .code(file.getCode())
+                .description(file.getDescription())
                 .typeId(file.getTypeId())
                 .typeDescriptionShort(file.getTypeDescriptionShort())
                 .clientId(file.getClientId())
