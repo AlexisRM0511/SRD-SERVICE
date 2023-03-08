@@ -14,6 +14,7 @@ public class Type {
     private String id;
     private String management;
     private String divisionId;
+    private String divisionDescription;
     private String description;
     private String descriptionShort;
 
@@ -22,6 +23,7 @@ public class Type {
                 .id(typeDTO.getId())
                 .management(typeDTO.getManagement())
                 .divisionId(typeDTO.getDivisionId())
+                .divisionDescription(typeDTO.getDivisionDescription())
                 .description(typeDTO.getDescription())
                 .descriptionShort(typeDTO.getDescriptionShort())
                 .build();

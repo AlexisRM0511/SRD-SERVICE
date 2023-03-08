@@ -11,6 +11,7 @@ public class TypeDTO {
     private String management;
     private String divisionId;
     private String description;
+    private String divisionDescription;
     private String descriptionShort;
 
     public static TypeDTO from(Type type) {
